@@ -4,6 +4,12 @@ from django.contrib.auth.models import User, Group
 from .models import Service, ServiceAlias, ServiceComponent, Role, Need
 
 
+# Unregister default admins for User and Group
+admin.site.unregister(User)
+admin.site.unregister(Group)
+
+
+@admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     pass
 
@@ -12,29 +18,23 @@ class ServiceAliasInlineAdmin(admin.StackedInline):
     model = ServiceAlias
 
 
+@admin.register(ServiceComponent)
 class ServiceComponentAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(Role)
 class RoleAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(Need)
 class NeedAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(User)
 class UserAdmin(UserAdmin):
     inlines = (
         ServiceAliasInlineAdmin,
     )
-
-
-admin.site.unregister(User)
-admin.site.unregister(Group)
-
-admin.site.register(Service, ServiceAdmin)
-admin.site.register(ServiceComponent, ServiceComponentAdmin)
-admin.site.register(Role, RoleAdmin)
-admin.site.register(Need, NeedAdmin)
-admin.site.register(User, UserAdmin)
