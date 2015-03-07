@@ -8,4 +8,7 @@ urlpatterns = patterns('',
 
     # Login for rest framework's browsable API
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    # Attendance API
+    url(r'^api/attendance/', include('auditor.attendance.urls')),
 )
