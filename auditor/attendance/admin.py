@@ -14,4 +14,4 @@ class MeetingAdmin (admin.ModelAdmin):
     inlines = (
         AttendanceInlineAdmin,
     )
-    list_display = ('name', 'date', 'head_count')
+    list_display = ('name', 'date', 'head_count', 'attendance_open')

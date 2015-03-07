@@ -23,3 +23,11 @@ class AttendanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Attendance
+
+    def validate_meeting(self, value):
+        """Check that the meeting is open
+
+        """
+        if not value.attendance_open:
+            raise serializers.ValidationError("Meeting must be open")
+        return value

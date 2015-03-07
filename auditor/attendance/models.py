@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -6,6 +7,7 @@ class Meeting(models.Model):
     """A meeting
     """
     name = models.CharField(max_length=50)
+    attendance_open = models.BooleanField(default=True)
     date = models.DateTimeField()
     created = models.DateTimeField(auto_now_add=True)
     present = models.ManyToManyField(User, through='Attendance',
