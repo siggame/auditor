@@ -8,27 +8,40 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.7/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1*u3b&h*df!+%r=%d4yxhvt7ju=fnr!2k#mvnri5g545&jcvqq'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = []
+# Determine some important file locations
+SETTINGS_DIR = os.path.dirname(__file__)
+BASE_DIR = os.path.dirname(SETTINGS_DIR)
+BUILDOUT_DIR = os.path.dirname(BASE_DIR)
+VAR_DIR = os.path.join(BUILDOUT_DIR, "var")
 
 
-# Application definition
+##########################################################################
+#
+# Secret settings
+#
+##########################################################################
+# If a secret_settings file isn't defined, open a new one and save a
+# SECRET_KEY in it. Then import it. All passwords and other secret
+# settings should be stored in secret_settings.py. NOT in settings.py
+try:
+    from secret_settings import *
+except ImportError:
+    print "Couldn't find secret_settings file. Creating a new one."
+    secret_settings_loc = os.path.join(SETTINGS_DIR, "secret_settings.py")
+    with open(secret_settings_loc, 'w') as secret_settings:
+        secret_key = ''.join([chr(ord(x) % 90 + 33) for x in os.urandom(40)])
+        secret_settings.write("SECRET_KEY = '''%s'''\n" % secret_key)
+    from secret_settings import *
 
+
+##########################################################################
+#
+# Application Definition
+#
+##########################################################################
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,24 +61,25 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'auditor.urls'
-
-WSGI_APPLICATION = 'auditor.wsgi.application'
+ROOT_URLCONF = 'auditor.auditor.urls'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+##########################################################################
+#
+# Database settings
+#
+##########################################################################
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# The database should *not* be set in this file. It should be set in
+# development.py or production.py instead.
+DATABASES = None
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
 
+##########################################################################
+#
+# Internationalization settings
+#
+##########################################################################
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -77,7 +91,9 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.7/howto/static-files/
-
+##########################################################################
+#
+# Static files settings
+#
+##########################################################################
 STATIC_URL = '/static/'
