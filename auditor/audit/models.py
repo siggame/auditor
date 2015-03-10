@@ -8,6 +8,9 @@ class Service(models.Model):
     """
     name = models.CharField(max_length=30)
 
+    def __str__(self):
+        return self.name
+
 
 class ServiceAlias(models.Model):
     """A user's alias for a service: their username
@@ -21,6 +24,10 @@ class ServiceAlias(models.Model):
     user = models.ForeignKey(User)
     alias = models.CharField(max_length=30)
 
+    def __str__(self):
+        return self.name
+
+
 
 class ServiceComponent(models.Model):
     """A component of a service: GitHub repo, Slack channel, etc.
@@ -28,6 +35,9 @@ class ServiceComponent(models.Model):
     """
     name = models.CharField(max_length=30)
     service = models.ForeignKey(Service)
+
+    def __str__(self):
+        return "{} ({})".format(self.name, str(self.service))
 
 
 class Role(models.Model):
@@ -37,6 +47,9 @@ class Role(models.Model):
     name = models.CharField(max_length=30)
     needs = models.ManyToManyField(ServiceComponent, through='Need',
                                    through_fields=('role', 'component'))
+
+    def __str__(self):
+        return self.name
 
 
 class Need(models.Model):
@@ -48,3 +61,6 @@ class Need(models.Model):
     """
     role = models.ForeignKey(Role)
     component = models.ForeignKey(ServiceComponent)
+
+    def __str__(self):
+        return "{} need for {}".format(str(self.role), str(self.component))
