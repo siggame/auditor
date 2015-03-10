@@ -17,11 +17,8 @@ bootstrap.py:
 
 # Destroys existing test database and creates a new one
 db:
-	rm -f var/db/*.db
-	rm -rf var/repos/*
-	python bin/django syncdb --noinput
+	rm -f var/db/*.sqlite3
 	python bin/django migrate
-	python bin/django loaddata webserver/fixtures/*_dev_data.yaml
 
 test: bin/buildout
 	python bin/buildout install simple-django
