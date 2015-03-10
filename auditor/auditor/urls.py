@@ -11,4 +11,7 @@ urlpatterns = patterns('',
 
     # Attendance API
     url(r'^api/attendance/', include('auditor.attendance.urls')),
+
+    # Audit API
+    url(r'^api/audit/', include('auditor.audit.urls')),
 )
