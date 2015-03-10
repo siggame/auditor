@@ -11,7 +11,8 @@ admin.site.unregister(Group)
 
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name',)
+    ordering = ('name',)
 
 
 class ServiceAliasInlineAdmin(admin.StackedInline):
@@ -20,17 +21,21 @@ class ServiceAliasInlineAdmin(admin.StackedInline):
 
 @admin.register(ServiceComponent)
 class ServiceComponentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'service')
+    ordering = ('service', 'name')
+
+
+class NeedInlineAdmin(admin.StackedInline):
+    model = Need
+    fields = ('role', 'component')
+    extra = 0
 
 
 @admin.register(Role)
 class RoleAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Need)
-class NeedAdmin(admin.ModelAdmin):
-    pass
+    inlines = (
+        NeedInlineAdmin,
+    )
 
 
 @admin.register(User)
