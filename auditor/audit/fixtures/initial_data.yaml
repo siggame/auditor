@@ -1,0 +1,12 @@
+- fields: {name: GitHub}
+  model: audit.service
+  pk: 1
+- fields: {name: Slack}
+  model: audit.service
+  pk: 2
+- fields: {name: Discourse}
+  model: audit.service
+  pk: 3
+- fields: {name: Google Group}
+  model: audit.service
+  pk: 4
